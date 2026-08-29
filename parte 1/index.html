@@ -1,0 +1,499 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionário Premiado - Verificação</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        /* ── Top accent bar ── */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #EE4D2D, #FF6633, #EE4D2D);
+            z-index: 999;
+        }
+
+        .container {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            padding: 48px 32px;
+            max-width: 460px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* subtle top border accent */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: #EE4D2D;
+        }
+
+        /* ── Stage transitions ── */
+        .stage {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .stage.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Icons ── */
+        .icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: #fff;
+        }
+
+        .icon.shield-icon {
+            background: linear-gradient(135deg, #EE4D2D 0%, #FF7043 100%);
+            animation: pulse 2s infinite;
+        }
+
+        .icon.spinner {
+            background: linear-gradient(135deg, #EE4D2D 0%, #FF7043 100%);
+            animation: spin 1.5s linear infinite;
+        }
+
+        .icon.success {
+            background: linear-gradient(135deg, #00C853 0%, #69F0AE 100%);
+            animation: checkmarkDraw 0.5s ease-in-out;
+        }
+
+        /* ── Typography ── */
+        h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 24px;
+            line-height: 1.45;
+        }
+
+        /* ── Loading bar (Shopee-style) ── */
+        .loading-bar-container {
+            width: 100%;
+            height: 6px;
+            background: #f0f0f0;
+            border-radius: 100px;
+            overflow: hidden;
+            margin: 24px 0;
+        }
+
+        .loading-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #EE4D2D, #FF8A65, #EE4D2D);
+            background-size: 200% 100%;
+            border-radius: 100px;
+            transition: width 0.3s ease-out;
+            animation: shimmer 1.5s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%   { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* ── Success message ── */
+        .success-message {
+            display: none;
+            color: #00C853;
+            font-size: 15px;
+            font-weight: 600;
+            margin-top: 16px;
+            animation: fadeIn 0.5s ease-in-out;
+            background: #E8F5E9;
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: 1px solid #C8E6C9;
+        }
+
+        .success-message.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* ── Stage 3 · Urgency ── */
+        .congrats-text {
+            color: #555;
+            font-size: 14px;
+            margin: 8px 0 4px;
+            line-height: 1.5;
+        }
+
+        /* Vagas badge — Shopee promo tag style */
+        .urgency-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #EE4D2D;
+            color: #fff;
+            font-size: 22px;
+            font-weight: 800;
+            padding: 12px 24px;
+            border-radius: 10px;
+            margin: 18px 0;
+            animation: urgencyPulse 1.2s ease-in-out infinite;
+            box-shadow: 0 4px 16px rgba(238,77,45,0.35);
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes urgencyPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.04); }
+        }
+
+        .urgency-badge .fire-icon { font-size: 24px; }
+        .vagas-counter { font-variant-numeric: tabular-nums; }
+
+        /* Date banner — Shein promo banner style */
+        .date-banner {
+            background: #FFF3E0;
+            border-left: 4px solid #EE4D2D;
+            border-radius: 0 10px 10px 0;
+            padding: 14px 18px;
+            margin: 16px 0 8px;
+            color: #BF360C;
+            font-size: 13px;
+            font-weight: 500;
+            line-height: 1.55;
+            text-align: left;
+        }
+
+        .date-banner .date-highlight {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            color: #D84315;
+            margin-top: 4px;
+        }
+
+        /* Alert bar */
+        .alert-bar {
+            background: #FFEBEE;
+            color: #C62828;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 8px 14px;
+            border-radius: 6px;
+            margin-top: 14px;
+            animation: blinkSoft 2s ease-in-out infinite;
+            letter-spacing: 0.2px;
+        }
+
+        @keyframes blinkSoft {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.55; }
+        }
+
+        /* ── CTA Button — Shopee "Buy Now" style ── */
+        .cta-button {
+            display: inline-block;
+            width: 100%;
+            background: #EE4D2D;
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 700;
+            padding: 16px 24px;
+            border-radius: 8px;
+            transition: all 0.25s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 14px rgba(238,77,45,0.4);
+            animation: ctaPulse 2s ease-in-out infinite;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 35%;
+            height: 200%;
+            background: rgba(255,255,255,0.18);
+            transform: skewX(-20deg);
+            animation: ctaShine 2.8s ease-in-out infinite;
+        }
+
+        @keyframes ctaShine {
+            0%        { left: -60%; }
+            50%, 100% { left: 120%; }
+        }
+
+        @keyframes ctaPulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 4px 14px rgba(238,77,45,0.4);
+            }
+            50% {
+                transform: scale(1.03);
+                box-shadow: 0 6px 22px rgba(238,77,45,0.55);
+            }
+        }
+
+        .cta-button:hover {
+            background: #D84315;
+            transform: scale(1.04) !important;
+            box-shadow: 0 8px 28px rgba(238,77,45,0.6) !important;
+            animation: none;
+        }
+
+        .cta-button:active {
+            transform: scale(1.01) !important;
+        }
+
+        /* ── Keyframes ── */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50%      { transform: scale(1.06); }
+        }
+
+        @keyframes checkmarkDraw {
+            0%   { transform: scale(0); }
+            50%  { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes spin {
+            0%   { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 520px) {
+            .container {
+                padding: 36px 20px;
+                border-radius: 12px;
+            }
+
+            h1 { font-size: 18px; }
+
+            .urgency-badge {
+                font-size: 19px;
+                padding: 10px 20px;
+            }
+
+            .date-banner {
+                font-size: 12px;
+                padding: 12px 14px;
+            }
+
+            .cta-button {
+                font-size: 14px;
+                padding: 14px 20px;
+            }
+
+            .icon {
+                width: 64px;
+                height: 64px;
+            }
+
+            .icon svg {
+                width: 36px;
+                height: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Etapa 1: Verificação de Segurança -->
+        <div id="stage1" class="stage active">
+            <div class="icon shield-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+            </div>
+            <h1>Verificando segurança do site</h1>
+            <div class="loading-bar-container">
+                <div id="loadingBar1" class="loading-bar" style="width: 11.4%;"></div>
+            </div>
+            <div id="successMsg1" class="success-message">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                Site 100% Seguro
+            </div>
+        </div>
+
+        <!-- Etapa 2: Verificação de Perfil -->
+        <div id="stage2" class="stage">
+            <div class="icon spinner">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+            </div>
+            <h1>Verificando se o seu perfil foi selecionado para participar da promoção...</h1>
+            <div class="loading-bar-container">
+                <div id="loadingBar2" class="loading-bar" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <!-- Etapa 3: Urgência -->
+        <div id="stage3" class="stage">
+            <div class="icon success checkmark">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </div>
+            <h1>🎉 Parabéns! Você foi selecionado!</h1>
+            <p class="congrats-text">Seu perfil está qualificado para participar do nosso questionário premiado.</p>
+
+            <div class="urgency-badge">
+                <span class="fire-icon">🔥</span>
+                <span class="vagas-counter" id="vagasCounter">67</span>&nbsp;vagas restantes
+            </div>
+
+            <div class="date-banner">
+                ⚠️ Atenção! Promoção com vagas limitadas.
+                <span class="date-highlight" id="dateBanner">Hoje, quinta-feira, 27 de agosto de 2026, é o último dia dessa promoção!</span>
+            </div>
+
+            <a href="https://programa-premium.online/" class="cta-button" id="ctaBtn">RESPONDER QUESTIONÁRIO AGORA!</a>
+
+            <div class="alert-bar">⏳ As vagas estão se esgotando rapidamente!</div>
+        </div>
+    </div>
+
+    <script>
+        // Função para animar a barra de carregamento
+        function animateLoadingBar(elementId, duration, callback) {
+            const bar = document.getElementById(elementId);
+            const startTime = Date.now();
+            const interval = 30;
+
+            const animate = () => {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min((elapsed / duration) * 100, 100);
+                bar.style.width = progress + '%';
+
+                if (progress < 100) {
+                    setTimeout(animate, interval);
+                } else if (callback) {
+                    callback();
+                }
+            };
+
+            animate();
+        }
+
+        // Função para mudar de etapa
+        function changeStage(currentStageId, nextStageId, delay = 0) {
+            setTimeout(() => {
+                const currentStage = document.getElementById(currentStageId);
+                const nextStage = document.getElementById(nextStageId);
+
+                if (currentStage) {
+                    currentStage.style.opacity = '0';
+                    setTimeout(() => {
+                        currentStage.classList.remove('active');
+                        if (nextStage) {
+                            nextStage.classList.add('active');
+                        }
+                    }, 500);
+                }
+            }, delay);
+        }
+
+        // Data formatada (código do usuário)
+        function getDataFormatada() {
+            let hoje = new Date();
+            const diasSemana = ['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'];
+            const meses = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+            let diaSemana = diasSemana[hoje.getDay()];
+            let dia = String(hoje.getDate());
+            let mes = meses[hoje.getMonth()];
+            let ano = hoje.getFullYear();
+            return `${diaSemana}, ${dia} de ${mes} de ${ano}`;
+        }
+
+        // Contador regressivo de vagas
+        function startVagasCountdown() {
+            const el = document.getElementById('vagasCounter');
+            let vagas = 67;
+            const minVagas = 40;
+
+            const tick = () => {
+                if (vagas <= minVagas) return;
+                vagas--;
+                el.textContent = vagas;
+                const speed = 300 + Math.random() * 700 + (67 - vagas) * 40;
+                setTimeout(tick, speed);
+            };
+
+            setTimeout(tick, 1500);
+        }
+
+        // Sequência de animações
+        window.addEventListener('DOMContentLoaded', () => {
+            // Preencher data
+            document.getElementById('dateBanner').textContent =
+                'Hoje, ' + getDataFormatada() + ', é o último dia dessa promoção!';
+
+            // Etapa 1: Verificação de Segurança (4.5 segundos)
+            animateLoadingBar('loadingBar1', 4500, () => {
+                document.getElementById('successMsg1').classList.add('show');
+
+                setTimeout(() => {
+                    changeStage('stage1', 'stage2');
+
+                    setTimeout(() => {
+                        animateLoadingBar('loadingBar2', 5000, () => {
+                            setTimeout(() => {
+                                changeStage('stage2', 'stage3');
+                                setTimeout(startVagasCountdown, 600);
+                            }, 500);
+                        });
+                    }, 500);
+                }, 1000);
+            });
+        });
+    </script>
+
+    <script src="js/latest.js" data-utmify-prevent-xcod-sck="" data-utmify-prevent-subids="" async="" defer=""></script>
+
+
+</body></html>
