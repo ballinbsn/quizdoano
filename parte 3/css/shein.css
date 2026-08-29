@@ -1,0 +1,101 @@
+/* ===== SHEIN Funnel — Design System (porta o globals.css do app bonito) ===== */
+
+*{ -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+
+html, body{
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  background-color:#ffffff;
+  color:#111111;
+  margin:0; padding:0;
+  min-height:100vh;
+  overscroll-behavior-y:none;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ===== Header ===== */
+.app-header{ position:sticky; top:0; z-index:50; background:#fff; border-bottom:1px solid #f3f4f6; }
+.app-header .bar{ max-width:42rem; margin:0 auto; padding:0 1rem; height:3.5rem; display:flex; align-items:center; justify-content:space-between; }
+.app-logo{ font-weight:900; font-size:1.25rem; letter-spacing:-0.02em; }
+.app-badge{ font-size:10px; font-weight:700; padding:2px 6px; background:#000; color:#fff; border-radius:4px; }
+.app-progress-wrap{ max-width:42rem; margin:0 auto; padding:0 1rem 0.5rem; }
+.app-progress-track{ height:6px; background:#f3f4f6; border-radius:999px; overflow:hidden; }
+.app-progress-fill{ height:100%; background:#000; border-radius:999px; transition:width .5s ease-out; }
+.app-progress-pct{ margin-top:4px; font-size:11px; color:#6b7280; text-align:right; font-variant-numeric:tabular-nums; }
+
+.app-brand{ display:flex; align-items:center; gap:8px; }
+.app-status{ display:flex; align-items:center; gap:7px; }
+.app-status-txt{ font-size:11px; color:#6b7280; font-weight:500; }
+@keyframes app-dot-pulse{ 0%,100%{ box-shadow:0 0 0 0 rgba(34,197,94,.5);} 50%{ box-shadow:0 0 0 6px rgba(34,197,94,0);} }
+.app-dot{ width:8px; height:8px; border-radius:50%; background:#22c55e; display:inline-block; animation:app-dot-pulse 1.8s ease-out infinite; }
+.app-footer{ text-align:center; font-size:10px; color:#9ca3af; padding:1.5rem 1rem; }
+
+/* ===== Step transition ===== */
+@keyframes stepFadeIn{ from{opacity:0; transform:translateY(12px);} to{opacity:1; transform:translateY(0);} }
+.step-enter{ animation:stepFadeIn .35s cubic-bezier(0.16,1,0.3,1) both; }
+
+/* ===== Spinner ===== */
+@keyframes spin-shein{ to{ transform:rotate(360deg); } }
+.spinner{ width:56px; height:56px; border-radius:50%; border:4px solid #f0f0f0; border-top-color:#000; animation:spin-shein .9s linear infinite; }
+
+/* ===== Pulse urgency ===== */
+@keyframes pulse-red{ 0%,100%{ box-shadow:0 0 0 0 rgba(239,68,68,.6);} 50%{ box-shadow:0 0 0 12px rgba(239,68,68,0);} }
+.pulse-red{ animation:pulse-red 1.6s ease-out infinite; }
+
+/* ===== Bouncing dots ===== */
+@keyframes bounce-dot{ 0%,60%,100%{ transform:translateY(0); opacity:.4;} 30%{ transform:translateY(-6px); opacity:1;} }
+.dot{ display:inline-block; width:8px; height:8px; margin:0 3px; background:#000; border-radius:50%; animation:bounce-dot 1.2s infinite ease-in-out; }
+.dot:nth-child(2){ animation-delay:.15s; } .dot:nth-child(3){ animation-delay:.3s; }
+
+/* ===== Option card ===== */
+.option-card{ transition:all .18s ease; }
+.option-card:hover{ transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,.08); }
+.option-card:active{ transform:translateY(0); box-shadow:0 2px 8px rgba(0,0,0,.08); }
+
+/* ===== Primary button ===== */
+.btn-primary{ background:#000; color:#fff; font-weight:600; transition:all .18s ease; border:none; cursor:pointer; }
+.btn-primary:hover:not(:disabled){ background:#222; transform:translateY(-1px); }
+.btn-primary:active:not(:disabled){ transform:translateY(0); }
+.btn-primary:disabled{ opacity:.4; cursor:not-allowed; }
+.btn-outline{ background:#fff; border:2px solid #e5e7eb; color:#374151; font-weight:600; cursor:pointer; transition:all .15s ease; }
+.btn-outline:hover{ background:#f9fafb; }
+
+/* ===== Confetti ===== */
+@keyframes confetti-fall{ 0%{ transform:translateY(-20px) rotate(0deg); opacity:1;} 100%{ transform:translateY(110vh) rotate(720deg); opacity:0;} }
+.confetti{ position:fixed; top:-20px; width:10px; height:10px; animation:confetti-fall 3.5s linear forwards; z-index:999; pointer-events:none; }
+
+/* ===== Pill ===== */
+.pill{ display:inline-flex; align-items:center; gap:6px; padding:6px 14px; border-radius:999px; font-size:12px; font-weight:600; letter-spacing:.02em; }
+
+/* ===== Inputs ===== */
+input[type=text],input[type=email],input[type=tel],input[type=number],textarea{ font-family:inherit; }
+input:focus,textarea:focus{ outline:none; }
+.input-field{ width:100%; padding:16px 18px; border:2px solid #e5e5e5; border-radius:12px; font-size:16px; transition:border-color .15s ease; background:#fff; }
+.input-field:focus{ border-color:#000; }
+
+/* ===== Heartbeat ===== */
+@keyframes heartbeat{ 0%,100%{ transform:scale(1);} 25%,75%{ transform:scale(1.05);} }
+.heartbeat{ animation:heartbeat 1.5s ease-in-out infinite; }
+
+/* ===== fadeIn ===== */
+@keyframes fadeIn{ from{ opacity:0; transform:translateY(8px);} to{ opacity:1; transform:translateY(0);} }
+.fade-in{ animation:fadeIn .4s ease; }
+
+/* ===== Raffle drawer (popup de baixo pra cima) ===== */
+@keyframes drawerUp{ from{ transform:translateY(100%);} to{ transform:translateY(0);} }
+.drawer-overlay{ position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:100; display:flex; align-items:flex-end; justify-content:center; opacity:0; transition:opacity .3s ease; }
+.drawer-overlay.show{ opacity:1; }
+.drawer-panel{ background:#fff; width:100%; max-width:42rem; max-height:92vh; overflow-y:auto; border-radius:24px 24px 0 0; animation:drawerUp .4s cubic-bezier(0.16,1,0.3,1) both; }
+
+/* ===== Container helpers ===== */
+.wrap-md{ max-width:28rem; margin:0 auto; }
+.wrap-2xl{ max-width:42rem; margin:0 auto; }
+
+/* tabular nums */
+.tnum{ font-variant-numeric:tabular-nums; }
+
+/* ===== Player de video vertical (tamanho travado p/ nao reiniciar) =====
+   O tamanho e definido aqui (CSS sincrono), NAO depende do Tailwind CDN
+   que carrega depois. Assim o container do video nao muda de tamanho ao
+   terminar de carregar a pagina e o player Wistia nao reinicia. */
+.vsl-box{ position:relative; width:100%; max-width:300px; margin:0 auto; aspect-ratio:9/16; border-radius:16px; overflow:hidden; background:#000; }
+.vsl-box iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; display:block; }
