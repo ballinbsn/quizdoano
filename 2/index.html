@@ -160,7 +160,7 @@
   },function(){
     var chk=document.getElementById('ab-chk'),cta=document.getElementById('ab-cta');
     chk.onchange=function(){cta.disabled=!chk.checked;cta.className='btn-primary w-full rounded-xl py-4 text-base mt-6'+(chk.checked?'':' opacity-40');};
-    cta.onclick=function(){if(cta.disabled)return;__funilNav('quiz/index.html');};
+    cta.onclick=function(){if(cta.disabled)return;__funilNav('/3/');};
   });
 
   SM.go('welcome');
