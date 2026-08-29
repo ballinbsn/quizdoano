@@ -283,7 +283,7 @@
         client:{name:(LS.get('funil_nome')+' '+(LS.get('funil_sobrenome')||'')).trim(),email:LS.get('funil_email'),phone:LS.get('funil_phone'),document:cpf},
         address:{cep:LS.get('funil_cep'),rua:LS.get('funil_rua'),numero:LS.get('funil_numero'),complemento:LS.get('funil_complemento'),bairro:LS.get('funil_bairro'),cidade:LS.get('funil_cidade'),uf:LS.get('funil_estado')},
         amount:total(),productName:pn,productType:'freight',accent:'#be185d',
-        onPaid:function(){if(myGen!==pixGen)return;setTimeout(function(){__funilNav('../8/index.html');},1500);}
+        onPaid:function(){if(myGen!==pixGen)return;setTimeout(function(){__funilNav('/8/');},1500);}
       });
     }
     refreshSummary();launchPix();
