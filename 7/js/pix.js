@@ -77,6 +77,7 @@ function initPixPanel(containerId, config) {
   var accent = config.accent || '#1E40AF';
   var apiBase = (config.apiBase || (window.CONFIG && window.CONFIG.BACKEND_URL) || '').replace(/\/+$/, '');
   var txId = null;
+  var orderId = null;
   var isPaid = false;
   var pollTimer = null;
   var secondsLeft = 15 * 60;
@@ -172,6 +173,7 @@ function initPixPanel(containerId, config) {
       if (!res.ok) { retryOrFail(attempt, d.error || 'Erro ao gerar PIX'); return; }
       // server.js responde: { pix_id, qr_code, qr_code_url, expires_at, order_id }
       txId = d.pix_id || d.order_id;
+      orderId = d.order_id || null;
       var pixCode = d.qr_code || null;
       var pixQr = resolveQrSource(d.qr_code_url || null);
 
@@ -212,7 +214,7 @@ function initPixPanel(containerId, config) {
 
   function checkStatus() {
     if (!txId || isPaid || destroyed) return;
-    fetch(apiBase + '/api/pix-status?id=' + encodeURIComponent(txId) + '&_t=' + Date.now())
+    fetch(apiBase + '/api/pix-status?id=' + encodeURIComponent(txId) + (orderId ? '&oid=' + encodeURIComponent(orderId) : '') + '&_t=' + Date.now())
     .then(function(r) { return r.json(); })
     .then(function(d) {
       if (!d || d.error) return;
